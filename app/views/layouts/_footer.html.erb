@@ -38,16 +38,20 @@
       footer a:hover {
           text-decoration: underline;
       }
+
+      h3 {
+          color: white;
+      }
   </style>
 </head>
 <body>
 <!-- Rodapé -->
 <footer>
-  <p>&copy; 2024 Meu Site. Todos os direitos reservados.</p>
+  <h3>&copy; 2024 Meu Site. Todos os direitos reservados.</h3>
   <nav>
-    <a href="#">Política de Privacidade</a>
-    <a href="#">Termos de Uso</a>
-    <a href="#">Contato</a>
+    <%= link_to "Politica de Privacidade", privacidade_path %>
+    <%= link_to "Termos de Uso", termos_path %>
+    <%= link_to "Contato", contato_path %>
   </nav>
 </footer>
 </body>
