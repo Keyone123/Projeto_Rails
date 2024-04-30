@@ -56,6 +56,10 @@
           transition: color 0.3s ease;
       }
 
+      p{
+          color: black;
+      }
+
       nav ul li a:hover {
           color: #007bff;
       }
@@ -68,9 +72,8 @@
   <!-- Menu de navegação -->
   <nav>
     <ul>
-      <li><%= link_to "Cadastro", cadastro_path %></li>
-      <li><%= link_to "Visualizar", visualizar_path %></li>
-      <li><%= link_to "Cadastro", cadastro_path %></li>
+      <li><%= link_to "Ínicio", tarefas_path %></li>
+      <li><%= link_to "Nova Tarefa", new_tarefa_path %></li>
       <li><%= link_to "Contato", contato_path %></li>
     </ul>
   </nav>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+      a{
+          color: white;
+      }
+
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f8f9fa;
+          padding: 20px;
+      }
+      h1 {
+          text-align: center;
+          margin-bottom: 20px;
+      }
+      /* Estilo dos cards */
+      .card {
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          margin-bottom: 20px;
+      }
+      .card h2 {
+          margin-bottom: 10px;
+      }
+      .card p {
+          margin-bottom: 10px;
+      }
+      .card .button {
+          display: inline-block;
+          padding: 10px 20px;
+          background-color: #007bff;
+          color: #fff;
+          text-decoration: none;
+          border-radius: 4px;
+      }
+      .card .button:hover {
+          background-color: #0056b3;
+      }
+      .action-link {
+          justify-content: center;
+          text-align: center;
+          align-content: center;
+          align-items: center;
+          height: 50px;
+          width: 150px;
+          background-color: #0056b3;
+          display: flex;
+          margin-top: 10px;
+          margin-bottom: 20px;
+          border: 1px solid #000;
+          border-radius: 10px;
+      }
+      .action-link:hover{
+          background-color: #003c80;
+      }
+
+      p{
+          color: black;
+      }
+
+      /* Estilos dos cards individuais */
+      <% @tarefas.each do |tarefa| %>
+      <%= dom_id(tarefa) %> {
+          background-color: <%= ["#f8d7da", "#d4edda", "#cce5ff", "#fff3cd"].sample %>;
+      /* Exemplo de cores diferentes para cada card */
+      }
+      <% end %>
+  </style>
+</head>
+<body>
+<p style="color: green"><%= notice %></p>
+
+<h1>Tarefas</h1>
+
+<div id="tarefas">
+  <% @tarefas.each do |tarefa| %>
+    <div class="card" id="<%= dom_id(tarefa) %>">
+      <%= render tarefa %>
+      <div class="action-link">
+        <%= link_to "Mostar Tarefa", tarefa %>
+      </div>
+    </div>
+
+  <% end %>
+</div>
+<div class="action-link">
+  <%= link_to "Nova Tarefa", new_tarefa_path%>
+</div>
+
+</body>
+</html>

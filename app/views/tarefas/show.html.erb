@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @tarefa %>
+
+<div>
+  <%= link_to "Editar Tarefa", edit_tarefa_path(@tarefa) %> |
+  <%= link_to "Voltar ao Inicio", tarefas_path %>
+
+  <%= button_to "Apagar esta Tarefa", @tarefa, method: :delete %>
+</div>
