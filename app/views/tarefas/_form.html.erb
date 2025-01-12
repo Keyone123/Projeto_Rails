@@ -1,73 +1,134 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Nova Tarefa | Minha Agenda Pessoal</title>
   <style>
-      /* Reset de estilos */
+      :root {
+          --primary-color: #3498db;
+          --primary-dark: #2980b9;
+          --error-color: #e74c3c;
+          --success-color: #2ecc71;
+          --text-color: #333;
+          --background-color: #f4f4f4;
+      }
+
       * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
       }
 
-      /* Estilo do contêiner */
+      body {
+          font-family: 'Roboto', Arial, sans-serif;
+          line-height: 1.6;
+          color: var(--text-color);
+          background-color: var(--background-color);
+          padding: 20px;
+      }
+
       .container {
           max-width: 600px;
           margin: 0 auto;
-      }
-
-      /* Estilo do cabeçalho */
-      header {
-          text-align: center;
-          margin-bottom: 20px;
-      }
-
-      /* Estilo do formulário de contato */
-      form {
           background-color: #fff;
-          padding: 20px;
+          padding: 30px;
           border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+          text-align: center;
+          margin-bottom: 30px;
+          color: var(--primary-color);
+      }
+
+      form {
+          display: grid;
+          gap: 20px;
+      }
+
+      .form-group {
+          display: flex;
+          flex-direction: column;
       }
 
       label {
-          display: block;
-          margin-bottom: 10px;
+          margin-bottom: 5px;
+          font-weight: bold;
       }
 
       input[type="text"],
-      input[type="email"],
+      input[type="date"],
       textarea {
           width: 100%;
           padding: 10px;
-          margin-bottom: 20px;
-          border: 1px solid #ccc;
+          border: 1px solid #ddd;
           border-radius: 4px;
+          font-size: 16px;
+          transition: border-color 0.3s ease;
+      }
+
+      input[type="text"]:focus,
+      input[type="date"]:focus,
+      textarea:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
       }
 
       input[type="submit"] {
-          background-color: #007bff;
+          background-color: var(--primary-color);
           color: #fff;
-          padding: 10px 20px;
+          padding: 12px 20px;
           border: none;
           border-radius: 4px;
           cursor: pointer;
+          font-size: 16px;
+          transition: background-color 0.3s ease;
       }
 
       input[type="submit"]:hover {
-          background-color: #0056b3;
+          background-color: var(--primary-dark);
+      }
+
+      .error-message {
+          background-color: var(--error-color);
+          color: #fff;
+          padding: 10px;
+          border-radius: 4px;
+          margin-bottom: 20px;
+      }
+
+      .error-message h2 {
+          font-size: 18px;
+          margin-bottom: 10px;
+      }
+
+      .error-message ul {
+          list-style-type: none;
+          padding-left: 20px;
+      }
+
+      .success-message {
+          background-color: var(--success-color);
+          color: #fff;
+          padding: 10px;
+          border-radius: 4px;
+          margin-bottom: 20px;
+          display: none;
       }
   </style>
 </head>
 <body>
-  <%= form_with(model: tarefa) do |form| %>
-    <% if tarefa.errors.any? %>
-      <div style="color: red">
-        <h2><%= pluralize(tarefa.errors.count, "error") %> prohibited this tarefa from being saved:</h2>
+<div class="container">
+  <h1>Nova Tarefa</h1>
 
+  <%= form_with(model: tarefa, local: true, html: { id: 'task-form' }) do |form| %>
+    <% if tarefa.errors.any? %>
+      <div class="error-message">
+        <h2><%= pluralize(tarefa.errors.count, "erro") %> impediram que esta tarefa fosse salva:</h2>
         <ul>
           <% tarefa.errors.each do |error| %>
             <li><%= error.full_message %></li>
@@ -76,27 +137,50 @@
       </div>
     <% end %>
 
-    <div>
-      <%= form.label :nome, style: "display: block" %>
-      <%= form.text_field :nome %>
+    <div class="form-group">
+      <%= form.label :nome %>
+      <%= form.text_field :nome, required: true %>
     </div>
 
-    <div>
-      <%= form.label :descrição, style: "display: block" %>
-      <%= form.text_field :descrição %>
+    <div class="form-group">
+      <%= form.label :descrição %>
+      <%= form.text_area :descrição, rows: 4 %>
     </div>
 
-    <div>
-      <%= form.label :data, style: "display: block" %>
-      <%= form.date_field :data %>
+    <div class="form-group">
+      <%= form.label :data %>
+      <%= form.date_field :data, required: true %>
     </div>
 
-    <div>
-      <%= form.submit %>
+    <div class="form-group">
+      <%= form.submit 'Criar Tarefa', data: { disable_with: 'Criando...' } %>
     </div>
   <% end %>
+
+  <div class="success-message">
+    Tarefa criada com sucesso!
+  </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('task-form');
+        const successMessage = document.querySelector('.success-message');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Simulate form submission (replace this with actual form submission logic)
+            setTimeout(function() {
+                form.reset();
+                successMessage.style.display = 'block';
+
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            }, 1000);
+        });
+    });
+</script>
 </body>
 </html>
-
-
-

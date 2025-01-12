@@ -1,18 +1,120 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>App</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><%= content_for?(:title) ? yield(:title) : "Minha Agenda Pessoal" %></title>
+  <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Organize suas tarefas e aumente sua produtividade com Minha Agenda Pessoal" %>">
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-  </head>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 
-  <body>
-    <%= render 'layouts/header' %>
-    <%= yield %>
-    <%= render 'layouts/footer' %>
-  </body>
+
+  <style>
+      /* Modern CSS Reset */
+      *, *::before, *::after {
+          box-sizing: border-box;
+      }
+      body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+          margin: 0;
+      }
+      html:focus-within {
+          scroll-behavior: smooth;
+      }
+      body {
+          min-height: 100vh;
+          text-rendering: optimizeSpeed;
+          line-height: 1.5;
+          font-family: 'Roboto', Arial, sans-serif;
+      }
+      img, picture {
+          max-width: 100%;
+          display: block;
+      }
+      input, button, textarea, select {
+          font: inherit;
+      }
+
+      /* Basic layout styles */
+      .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+      }
+      .main-content {
+          padding: 2rem 0;
+      }
+      .flash-messages {
+          padding: 1rem 0;
+      }
+      .flash-message {
+          padding: 0.5rem 1rem;
+          margin-bottom: 1rem;
+          border-radius: 4px;
+      }
+      .flash-message.notice {
+          background-color: #d4edda;
+          color: #155724;
+      }
+      .flash-message.alert {
+          background-color: #f8d7da;
+          color: #721c24;
+      }
+  </style>
+</head>
+
+<body>
+<div id="page-container">
+  <%= render 'layouts/header' %>
+
+  <main class="main-content">
+    <div class="container">
+      <% if notice %>
+        <div class="flash-messages">
+          <p class="flash-message notice"><%= notice %></p>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="flash-messages">
+          <p class="flash-message alert"><%= alert %></p>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </div>
+  </main>
+
+  <%= render 'layouts/footer' %>
+</div>
+
+<script>
+    // JavaScript to handle smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // JavaScript to handle flash message dismissal
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const flashMessages = document.querySelectorAll('.flash-message');
+        flashMessages.forEach(message => {
+            message.addEventListener('click', function() {
+                this.style.display = 'none';
+            });
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        });
+    });
+</script>
+</body>
 </html>

@@ -1,10 +1,144 @@
-<p style="color: green"><%= notice %></p>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Detalhes da Tarefa | Minha Agenda Pessoal</title>
+  <style>
+      :root {
+          --primary-color: #3498db;
+          --primary-dark: #2980b9;
+          --danger-color: #e74c3c;
+          --danger-dark: #c0392b;
+          --success-color: #2ecc71;
+          --background-color: #f4f4f4;
+          --text-color: #333;
+          --border-color: #ddd;
+      }
 
-<%= render @tarefa %>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
 
-<div>
-  <%= link_to "Editar Tarefa", edit_tarefa_path(@tarefa) %> |
-  <%= link_to "Voltar ao Inicio", tarefas_path %>
+      body {
+          font-family: 'Roboto', Arial, sans-serif;
+          line-height: 1.6;
+          color: var(--text-color);
+          background-color: var(--background-color);
+          padding: 20px;
+      }
 
-  <%= button_to "Apagar esta Tarefa", @tarefa, method: :delete %>
+      .container {
+          max-width: 800px;
+          margin: 0 auto;
+          background-color: #fff;
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .notice {
+          background-color: var(--success-color);
+          color: white;
+          padding: 10px;
+          border-radius: 4px;
+          margin-bottom: 20px;
+          text-align: center;
+      }
+
+      .task-details {
+          margin-bottom: 30px;
+      }
+
+      .task-details h1 {
+          color: var(--primary-color);
+          margin-bottom: 15px;
+      }
+
+      .task-details p {
+          margin-bottom: 10px;
+      }
+
+      .actions {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 20px;
+      }
+
+      .btn {
+          display: inline-block;
+          padding: 10px 20px;
+          background-color: var(--primary-color);
+          color: #fff;
+          text-decoration: none;
+          border-radius: 4px;
+          transition: background-color 0.3s ease;
+          border: none;
+          cursor: pointer;
+          font-size: 16px;
+      }
+
+      .btn:hover {
+          background-color: var(--primary-dark);
+      }
+
+      .btn-danger {
+          background-color: var(--danger-color);
+      }
+
+      .btn-danger:hover {
+          background-color: var(--danger-dark);
+      }
+
+      @media (max-width: 600px) {
+          .container {
+              padding: 20px;
+          }
+
+          .actions {
+              flex-direction: column;
+              gap: 10px;
+          }
+
+          .btn {
+              width: 100%;
+              text-align: center;
+          }
+      }
+  </style>
+</head>
+<body>
+<div class="container">
+  <% if notice %>
+    <p class="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="task-details">
+    <%= render @tarefa %>
+  </div>
+
+  <div class="actions">
+    <%= link_to "Editar Tarefa", edit_tarefa_path(@tarefa), class: "btn" %>
+    <%= link_to "Voltar ao Início", tarefas_path, class: "btn" %>
+    <%= button_to "Apagar esta Tarefa", @tarefa, method: :delete, class: "btn btn-danger", data: { confirm: "Tem certeza que deseja apagar esta tarefa?" } %>
+  </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButton = document.querySelector('.btn-danger');
+        if (deleteButton) {
+            deleteButton.addEventListener('click', function(e) {
+                if (!confirm('Tem certeza que deseja apagar esta tarefa?')) {
+                    e.preventDefault();
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

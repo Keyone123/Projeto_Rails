@@ -1,99 +1,151 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Lista de Tarefas | Minha Agenda Pessoal</title>
   <style>
-      a{
-          color: white;
+      :root {
+          --primary-color: #3498db;
+          --primary-dark: #2980b9;
+          --success-color: #2ecc71;
+          --warning-color: #f1c40f;
+          --danger-color: #e74c3c;
+          --text-color: #333;
+          --background-color: #f8f9fa;
+          --card-background: #fff;
+      }
+
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
       }
 
       body {
-          font-family: Arial, sans-serif;
-          background-color: #f8f9fa;
+          font-family: 'Roboto', Arial, sans-serif;
+          background-color: var(--background-color);
+          color: var(--text-color);
+          line-height: 1.6;
           padding: 20px;
       }
+
+      .container {
+          max-width: 1200px;
+          margin: 0 auto;
+      }
+
       h1 {
           text-align: center;
-          margin-bottom: 20px;
+          margin-bottom: 30px;
+          color: var(--primary-color);
       }
-      /* Estilo dos cards */
+
+      .notice {
+          background-color: var(--success-color);
+          color: white;
+          padding: 10px;
+          border-radius: 4px;
+          margin-bottom: 20px;
+          text-align: center;
+      }
+
+      .task-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 20px;
+      }
+
       .card {
-          background-color: #fff;
+          background-color: var(--card-background);
           border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           padding: 20px;
-          margin-bottom: 20px;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
+
+      .card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
       .card h2 {
           margin-bottom: 10px;
+          color: var(--primary-color);
       }
+
       .card p {
-          margin-bottom: 10px;
+          margin-bottom: 15px;
       }
-      .card .button {
+
+      .button {
           display: inline-block;
           padding: 10px 20px;
-          background-color: #007bff;
-          color: #fff;
+          background-color: var(--primary-color);
+          color: white;
           text-decoration: none;
           border-radius: 4px;
-      }
-      .card .button:hover {
-          background-color: #0056b3;
-      }
-      .action-link {
-          justify-content: center;
+          transition: background-color 0.3s ease;
           text-align: center;
-          align-content: center;
-          align-items: center;
-          height: 50px;
-          width: 150px;
-          background-color: #0056b3;
-          display: flex;
-          margin-top: 10px;
-          margin-bottom: 20px;
-          border: 1px solid #000;
-          border-radius: 10px;
-      }
-      .action-link:hover{
-          background-color: #003c80;
       }
 
-      p{
-          color: black;
+      .button:hover {
+          background-color: var(--primary-dark);
       }
 
-      /* Estilos dos cards individuais */
-      <% @tarefas.each do |tarefa| %>
-      <%= dom_id(tarefa) %> {
-          background-color: <%= ["#f8d7da", "#d4edda", "#cce5ff", "#fff3cd"].sample %>;
-      /* Exemplo de cores diferentes para cada card */
+      .new-task-button {
+          display: block;
+          width: 200px;
+          margin: 30px auto 0;
+          background-color: var(--success-color);
       }
-      <% end %>
+
+      .new-task-button:hover {
+          background-color: #27ae60;
+      }
+
+      @media (max-width: 768px) {
+          .task-grid {
+              grid-template-columns: 1fr;
+          }
+      }
   </style>
 </head>
 <body>
-<p style="color: green"><%= notice %></p>
-
-<h1>Tarefas</h1>
-
-<div id="tarefas">
-  <% @tarefas.each do |tarefa| %>
-    <div class="card" id="<%= dom_id(tarefa) %>">
-      <%= render tarefa %>
-      <div class="action-link">
-        <%= link_to "Mostar Tarefa", tarefa %>
-      </div>
-    </div>
-
+<div class="container">
+  <% if notice %>
+    <p class="notice"><%= notice %></p>
   <% end %>
-</div>
-<div class="action-link">
-  <%= link_to "Nova Tarefa", new_tarefa_path%>
+
+  <h1>Minhas Tarefas</h1>
+
+  <div class="task-grid" id="tarefas">
+    <% @tarefas.each do |tarefa| %>
+      <div class="card" id="<%= dom_id(tarefa) %>" style="background-color: <%= ['#d4edda', '#cce5ff', '#fff3cd', '#f8d7da'].sample %>;">
+        <%= render tarefa %>
+        <%= link_to "Ver Detalhes", tarefa, class: "button" %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= link_to "Nova Tarefa", new_tarefa_path, class: "button new-task-button" %>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+                card.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.15)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            });
+        });
+    });
+</script>
 </body>
 </html>

@@ -1,17 +1,96 @@
-<div id="<%= dom_id tarefa %>">
-  <p>
-    <strong>Nome:</strong>
-    <%= tarefa.nome %>
-  </p>
+<div id="<%= dom_id tarefa %>" class="task-card">
+  <div class="task-header">
+    <h2 class="task-title"><%= tarefa.nome %></h2>
+    <span class="task-date"><%= l(tarefa.data, format: :long) %></span>
+  </div>
 
-  <p>
-    <strong>Descrição:</strong>
-    <%= tarefa.descrição %>
-  </p>
+  <div class="task-body">
+    <p class="task-description"><%= tarefa.descrição %></p>
+  </div>
 
-  <p>
-    <strong>Data:</strong>
-    <%= tarefa.data %>
-  </p>
-
+  <div class="task-footer">
+    <%= link_to "Editar", edit_tarefa_path(tarefa), class: "task-action edit" %>
+    <%= link_to "Excluir", tarefa_path(tarefa), method: :delete, data: { confirm: "Tem certeza que deseja excluir esta tarefa?" }, class: "task-action delete" %>
+  </div>
 </div>
+
+<style>
+    .task-card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .task-card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .task-header {
+        background-color: #3498db;
+        color: #ffffff;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .task-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .task-date {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .task-body {
+        padding: 20px;
+    }
+
+    .task-description {
+        color: #333333;
+        font-size: 1rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .task-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .task-action {
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .task-action.edit {
+        background-color: #2ecc71;
+        color: #ffffff;
+        margin-right: 10px;
+    }
+
+    .task-action.edit:hover {
+        background-color: #27ae60;
+    }
+
+    .task-action.delete {
+        background-color: #e74c3c;
+        color: #ffffff;
+    }
+
+    .task-action.delete:hover {
+        background-color: #c0392b;
+    }
+</style>
